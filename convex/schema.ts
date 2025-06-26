@@ -3,6 +3,13 @@ import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
 
 const applicationTables = {
+  users: defineTable({
+    tokenIdentifier: v.string(),
+    email: v.string(),
+    name: v.string(),
+    createdAt: v.number(),
+  }).index("by_token", ["tokenIdentifier"]),
+
   conversations: defineTable({
     title: v.string(),
     systemPrompt: v.string(),
