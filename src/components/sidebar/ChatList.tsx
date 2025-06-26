@@ -77,22 +77,24 @@ export function ChatList({
             onClick={() => onSelectConversation(conversation._id)}
           >
             <div className="flex-1 min-w-0">
-              <div 
-                className={`font-medium text-sm truncate ${isRTL ? 'text-right' : 'text-left'}`}
-                dir={isRTL ? 'rtl' : 'ltr'}
+              <div
+                className={`font-medium text-sm truncate ${isRTL ? "text-right" : "text-left"}`}
+                dir={isRTL ? "rtl" : "ltr"}
                 style={{
-                  fontFamily: hasArabic 
+                  fontFamily: hasArabic
                     ? '"Noto Sans Arabic", "Cairo", system-ui, sans-serif'
-                    : 'inherit'
+                    : "inherit",
                 }}
               >
                 {conversation.title}
               </div>
-              <div className={`text-xs text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
+              <div
+                className={`text-xs text-foreground ${isRTL ? "text-right" : "text-left"}`}
+              >
                 {formatDate(conversation.updatedAt)}
               </div>
             </div>
-            
+
             <Button
               variant="ghost"
               size="icon"

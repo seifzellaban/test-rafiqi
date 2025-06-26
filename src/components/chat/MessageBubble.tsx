@@ -63,23 +63,27 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
             <div className="flex-1">
-              <div 
+              <div
                 className={`whitespace-pre-wrap break-words ${
-                  isRTL ? 'text-right' : 'text-left'
+                  isRTL ? "text-right" : "text-left"
                 }`}
-                dir={isRTL ? 'rtl' : 'ltr'}
+                dir={isRTL ? "rtl" : "ltr"}
+                lang={hasArabic ? "ar" : "en"}
                 style={{
-                  fontFamily: hasArabic 
-                    ? '"Noto Sans Arabic", "Cairo", "Amiri", "Scheherazade New", system-ui, sans-serif'
-                    : 'inherit',
-                  lineHeight: hasArabic ? '1.8' : '1.5'
+                  fontFamily: hasArabic
+                    ? '"IBM Plex Sans Arabic", "Noto Sans Arabic", "Cairo", "Amiri", "Scheherazade New", system-ui, sans-serif'
+                    : "inherit",
+                  lineHeight: hasArabic ? "1.8" : "1.5",
+                  unicodeBidi: "plaintext", // Ensures correct bidi rendering for mixed content
                 }}
               >
                 {message.content}
               </div>
-              <div className={`flex items-center justify-between mt-2 ${
-                isRTL ? 'flex-row-reverse' : 'flex-row'
-              }`}>
+              <div
+                className={`flex items-center justify-between mt-2 ${
+                  isRTL ? "flex-row-reverse" : "flex-row"
+                }`}
+              >
                 <span className="text-xs opacity-70">
                   {formatTime(message.createdAt)}
                 </span>
@@ -91,13 +95,13 @@ export function MessageBubble({ message }: MessageBubbleProps) {
                 >
                   {copied ? (
                     <>
-                      <Check className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                      {isRTL ? 'تم النسخ!' : 'Copied!'}
+                      <Check className={`w-3 h-3 ${isRTL ? "ml-1" : "mr-1"}`} />
+                      {isRTL ? "تم النسخ!" : "Copied!"}
                     </>
                   ) : (
                     <>
-                      <Copy className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                      {isRTL ? 'نسخ' : 'Copy'}
+                      <Copy className={`w-3 h-3 ${isRTL ? "ml-1" : "mr-1"}`} />
+                      {isRTL ? "نسخ" : "Copy"}
                     </>
                   )}
                 </Button>

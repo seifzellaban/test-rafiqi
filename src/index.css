@@ -6,26 +6,104 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.0%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10.1961%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10.1961%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10.1961%;
+    --primary: 73.8462 31.7073% 75.8824%;
+    --primary-foreground: 0 0% 10.1961%;
+    --secondary: 220.0000 14.2857% 95.8824%;
+    --secondary-foreground: 0 0% 10.1961%;
+    --muted: 47.5862 38.6667% 85.2941%;
+    --muted-foreground: 88 38.4615% 15.2941%;
+    --accent: 29.6907 53.0055% 64.1176%;
+    --accent-foreground: 0 0% 10.1961%;
+    --destructive: 0 69.3989% 35.8824%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13.0435% 90.9804%;
+    --input: 220 13.0435% 90.9804%;
+    --ring: 29.6907 53.0055% 64.1176%;
+    --chart-1: 73.8462 31.7073% 75.8824%;
+    --chart-2: 66.6667 50.0000% 85.8824%;
+    --chart-3: 52.0000 93.7500% 93.7255%;
+    --chart-4: 42.6667 81.8182% 89.2157%;
+    --chart-5: 29.6907 53.0055% 64.1176%;
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --font-sans: Space Grotesk, serif;
+    --font-serif: Architects Daughter, sans-serif;
+    --font-mono: Space Mono, monospace;
     --radius: 0.5rem;
+    --shadow-2xs: 0 0 25px 0 hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 0 25px 0 hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow-md: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+    --shadow-lg: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+    --shadow-xl: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+    --shadow-2xl: 0 0 25px 0 hsl(0 0% 0% / 0.25);
+    --tracking-normal: 0.025em;
+    --sidebar-background: 0 0% 98%;
+  }
+  
+  .dark {
+    --background: 0 0% 10.1961%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 14.9020%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 14.9020%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 73.8462 31.7073% 75.8824%;
+    --primary-foreground: 0 0% 10.1961%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65.8824%;
+    --accent: 29.6907 53.0055% 64.1176%;
+    --accent-foreground: 0 0% 10.1961%;
+    --destructive: 0 69.3989% 35.8824%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 25.0980%;
+    --input: 0 0% 20%;
+    --ring: 29.6907 53.0055% 64.1176%;
+    --chart-1: 73.8462 31.7073% 75.8824%;
+    --chart-2: 66.6667 50.0000% 85.8824%;
+    --chart-3: 52.0000 93.7500% 93.7255%;
+    --chart-4: 42.6667 81.8182% 89.2157%;
+    --chart-5: 29.6907 53.0055% 64.1176%;
+    --sidebar: 0 0% 10.1961%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --font-sans: Space Grotesk, serif;
+    --font-serif: Architects Daughter, sans-serif;
+    --font-mono: Space Mono, monospace;
+    --radius: 0.5rem;
+    --shadow-2xs: 0 0 25px 0 hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 0 25px 0 hsl(0 0% 0% / 0.05);
+    --shadow-sm: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+    --shadow-md: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
+    --shadow-lg: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
+    --shadow-xl: 0 0 25px 0 hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
+    --shadow-2xl: 0 0 25px 0 hsl(0 0% 0% / 0.25);
+    --sidebar-background: 240 5.9% 10%;
+  }
+  
+  body {
+    letter-spacing: var(--tracking-normal);
   }
 }
 
@@ -83,4 +161,75 @@
 /* Mixed content support */
 .mixed-content {
   unicode-bidi: plaintext;
+}
+
+
+/* View Transition Wave Effect */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  /* Ensure the outgoing view (old theme) is beneath */
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  /* Ensure the incoming view (new theme) is always on top */
+  z-index: 1;
+}
+
+@keyframes reveal {
+  from {
+    /* Use CSS variables for the origin, defaulting to center if not set */
+    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
+    opacity: 0.7;
+  }
+  to {
+    /* Use CSS variables for the origin, defaulting to center if not set */
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+    opacity: 1;
+  }
+}
+
+::view-transition-new(root) {
+  /* Apply the reveal animation */
+  animation: reveal 0.4s ease-in-out forwards;
+}
+
+/* Mention styles */
+.mention {
+  @apply bg-primary/10 rounded-md px-1 font-mono text-sm font-semibold;
+}
+
+@keyframes text {
+  from {
+    background-position: 0% center;
+  }
+  to {
+    background-position: -200% center;
+  }
+}
+
+.animate-text {
+  animation: text 3s linear infinite;
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
+@utility scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
+}
+
+@utility scrollbar-gutter-both {
+  scrollbar-gutter: stable both-edges;
 }

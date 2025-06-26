@@ -9,24 +9,42 @@ const isArabicText = (text: string): boolean => {
   return arabicRegex.test(text);
 };
 
-// Function to detect if text is primarily RTL
-const isRTLText = (text: string): boolean => {
-  const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-  const rtlChars = (text.match(rtlRegex) || []).length;
-  const totalChars = text.replace(/\s/g, '').length;
-  return rtlChars / totalChars > 0.3; // If more than 30% RTL characters
+// Function to detect if the first strong character is RTL
+const isFirstStrongRTL = (text: string): boolean => {
+  for (const char of text) {
+    if (/\s/.test(char)) continue;
+    if (/[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(char)) {
+      return true;
+    }
+    if (/[A-Za-z0-9]/.test(char)) {
+      return false;
+    }
+  }
+  return false;
 };
 
 interface MessageInputProps {
   onSendMessage: (content: string) => void;
+  isLoading: boolean;
+  keyboardOffset?: number;
 }
 
-export function MessageInput({ onSendMessage }: MessageInputProps) {
+export function MessageInput({
+  onSendMessage,
+  isLoading,
+  keyboardOffset = 0,
+}: MessageInputProps) {
   const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const isRTL = isRTLText(message);
+  const isRTL = isFirstStrongRTL(message);
   const hasArabic = isArabicText(message);
+
+  // Focus textarea after sending a message
+  useEffect(() => {
+    if (!isLoading && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,13 +52,9 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
 
     const messageToSend = message.trim();
     setMessage("");
-    setIsLoading(true);
 
-    try {
-      await onSendMessage(messageToSend);
-    } finally {
-      setIsLoading(false);
-    }
+    await onSendMessage(messageToSend);
+    // Focus will be handled by useEffect
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -58,7 +72,10 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
   }, [message]);
 
   return (
-    <div className="border-t border-border bg-card p-4">
+    <div
+      className="border-t border-border bg-card p-4"
+      style={{ marginBottom: keyboardOffset }}
+    >
       <form onSubmit={handleSubmit} className="flex gap-3">
         <div className="flex-1 relative">
           <Textarea
@@ -66,19 +83,28 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isRTL ? "اكتب رسالتك هنا..." : "Type your message here..."}
-            className={`min-h-[52px] max-h-32 resize-none ${isRTL ? 'pl-12 text-right' : 'pr-12 text-left'}`}
-            dir={isRTL ? 'rtl' : 'ltr'}
+            placeholder={
+              isRTL ? "اكتب رسالتك هنا..." : "Type your message here..."
+            }
+            className={`min-h-[52px] max-h-32 resize-none ${isRTL ? "pl-12 text-right" : "pr-12 text-left"}`}
+            dir={isRTL ? "rtl" : "ltr"}
+            lang={hasArabic ? "ar" : "en"}
             style={{
-              fontFamily: hasArabic 
-                ? '"Noto Sans Arabic", "Cairo", "Amiri", "Scheherazade New", system-ui, sans-serif'
-                : 'inherit',
-              lineHeight: hasArabic ? '1.8' : '1.5'
+              fontFamily: hasArabic
+                ? '"IBM Plex Sans Arabic", "Noto Sans Arabic", "Cairo", "Amiri", "Scheherazade New", system-ui, sans-serif'
+                : "inherit",
+              lineHeight: hasArabic ? "1.8" : "1.5",
+              unicodeBidi: "plaintext", // Ensures correct bidi rendering for mixed content
             }}
             rows={1}
             disabled={isLoading}
+            autoCorrect={hasArabic ? "on" : undefined}
+            autoCapitalize={hasArabic ? "sentences" : undefined}
+            spellCheck={hasArabic}
           />
-          <div className={`absolute bottom-2 ${isRTL ? 'left-2' : 'right-2'} text-xs text-muted-foreground`}>
+          <div
+            className={`absolute bottom-2 ${isRTL ? "left-2" : "right-2"} text-xs text-muted-foreground`}
+          >
             {message.length}
           </div>
         </div>
@@ -95,8 +121,12 @@ export function MessageInput({ onSendMessage }: MessageInputProps) {
           )}
         </Button>
       </form>
-      <div className={`text-xs text-muted-foreground mt-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-        {isRTL ? 'اضغط Enter للإرسال، Shift+Enter لسطر جديد' : 'Press Enter to send, Shift+Enter for new line'}
+      <div
+        className={`text-xs text-muted-foreground mt-2 ${isRTL ? "text-right" : "text-left"}`}
+      >
+        {isRTL
+          ? "اضغط Enter للإرسال، Shift+Enter لسطر جديد"
+          : "Press Enter to send, Shift+Enter for new line"}
       </div>
     </div>
   );

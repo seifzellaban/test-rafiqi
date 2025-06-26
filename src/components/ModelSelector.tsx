@@ -15,13 +15,7 @@ interface ModelSelectorProps {
 }
 
 const predefinedModels = [
-  { id: "default", name: "Default Assistant", description: "Helpful AI assistant" },
-  { id: "code", name: "Code Expert", description: "Programming and development" },
-  { id: "creative", name: "Creative Writer", description: "Storytelling and creative content" },
-  { id: "business", name: "Business Analyst", description: "Strategic insights and analysis" },
-  { id: "research", name: "Research Assistant", description: "Thorough research and information" },
-  { id: "tutor", name: "Tutor", description: "Patient teaching and explanations" },
-  { id: "custom", name: "Custom Prompt", description: "Your own system prompt" },
+  { id: "default", name: "Rafiqi", description: "First Beta Model" },
 ];
 
 export function ModelSelector({
@@ -37,7 +31,9 @@ export function ModelSelector({
   const createCustomPrompt = useMutation(api.customPrompts.create);
   const deleteCustomPrompt = useMutation(api.customPrompts.remove);
 
-  const selectedModelData = predefinedModels.find(m => m.id === selectedModel);
+  const selectedModelData = predefinedModels.find(
+    (m) => m.id === selectedModel
+  );
 
   const handleModelSelect = (modelId: string) => {
     onModelChange(modelId);
@@ -69,26 +65,28 @@ export function ModelSelector({
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="gap-2">
             <Settings className="w-4 h-4" />
-            <span className="font-medium">{selectedModelData?.name || "Select Model"}</span>
+            <span className="font-medium">
+              {selectedModelData?.name || "Select Model"}
+            </span>
             <ChevronDown className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-80">
-          <DropdownMenuLabel>AI Models</DropdownMenuLabel>
+          <DropdownMenuLabel>Versions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {predefinedModels.map((model) => (
             <DropdownMenuItem
               key={model.id}
               onClick={() => handleModelSelect(model.id)}
-              className={`flex flex-col items-start p-3 ${
+              className={`flex flex-col items-start p-3  hover:cursor-pointer ${
                 selectedModel === model.id ? "bg-accent" : ""
               }`}
             >
               <div className="font-medium">{model.name}</div>
-              <div className="text-sm text-muted-foreground">{model.description}</div>
+              <div className="text-sm text-foreground">{model.description}</div>
             </DropdownMenuItem>
           ))}
-          
+
           {customPrompts.length > 0 && (
             <>
               <DropdownMenuSeparator />
@@ -127,7 +125,10 @@ export function ModelSelector({
       </DropdownMenu>
 
       {/* Custom Prompt Dialog */}
-      <Dialog open={showCustomPromptModal} onOpenChange={setShowCustomPromptModal}>
+      <Dialog
+        open={showCustomPromptModal}
+        onOpenChange={setShowCustomPromptModal}
+      >
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Custom System Prompt</DialogTitle>
