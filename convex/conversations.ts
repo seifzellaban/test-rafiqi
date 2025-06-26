@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { Id } from "./_generated/dataModel";
 
 export const list = query({
   args: {},
@@ -27,13 +28,22 @@ export const create = mutation({
   },
   handler: async (ctx, { title, systemPrompt, userId }) => {
     const now = Date.now();
-    return await ctx.db.insert("conversations", {
+    const conversationData: {
+      title: string;
+      systemPrompt: string;
+      createdAt: number;
+      updatedAt: number;
+      userId?: Id<"users">;
+    } = {
       title,
       systemPrompt: systemPrompt || "You are a helpful AI assistant.",
       createdAt: now,
       updatedAt: now,
-      userId: userId,
-    });
+    };
+    if (userId) {
+      conversationData.userId = userId;
+    }
+    return await ctx.db.insert("conversations", conversationData);
   },
 });
 
@@ -71,10 +81,10 @@ export const updateTitle = mutation({
 export const get = query({
   args: { id: v.id("conversations") },
   handler: async (ctx, { id }) => {
-    const userId = await ctx.auth.getUserIdentity();
+    const userIdentity = await ctx.auth.getUserIdentity();
     const conversation = await ctx.db.get(id);
     if (!conversation) return null;
-    if (conversation.userId && userId !== conversation.userId) {
+    if (conversation.userId && (!userIdentity || userIdentity.subject !== conversation.userId)) {
       throw new Error("Access denied: You do not own this conversation.");
     }
     return conversation;
