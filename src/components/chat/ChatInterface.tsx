@@ -52,17 +52,29 @@ export function ChatInterface() {
 
   const handleNewChat = async () => {
     const systemPrompt = getSystemPrompt();
+    // Get the current user ID from auth
+    let userId: Id<"users"> | undefined = undefined;
+    try {
+      const res = await fetch("/api/auth/me");
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.user && data.user._id) {
+          userId = data.user._id;
+        }
+      }
+    } catch {}
     const conversationId = await createConversation({
       title: "New Chat",
       systemPrompt,
+      userId,
     });
     setCurrentConversationId(conversationId);
   };
 
   const getSystemPrompt = () => {
     return (
-      prompts[selectedModel as keyof typeof prompts] || prompts.default
-    ).replace(/\{customPrompt\}/g, customPrompt || prompts.default);
+      prompts[selectedModel as keyof typeof prompts] || prompts.rpr1
+    ).replace(/\{customPrompt\}/g, customPrompt || prompts.rpr1);
   };
 
   const handleSendMessage = async (content: string) => {

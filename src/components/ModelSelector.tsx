@@ -15,7 +15,8 @@ interface ModelSelectorProps {
 }
 
 const predefinedModels = [
-  { id: "default", name: "Rafiqi", description: "First Beta Model" },
+  { id: "rpr1", name: "Rafiqi (RPR1)", description: "First Beta Model" },
+  { id: "rprn", name: "RPRN", description: "Playground Model" },
 ];
 
 export function ModelSelector({
