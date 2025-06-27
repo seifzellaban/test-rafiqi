@@ -3,6 +3,7 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Copy, Check } from "lucide-react";
+import MarkdownRenderer from "../ui/MarkdownRenderer";
 
 // Function to detect if text contains Arabic characters
 const isArabicText = (text: string): boolean => {
@@ -77,7 +78,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
                   unicodeBidi: "plaintext", // Ensures correct bidi rendering for mixed content
                 }}
               >
-                {message.content}
+                <MarkdownRenderer content={message.content} />
               </div>
               <div
                 className={`flex items-center justify-between mt-2 ${
