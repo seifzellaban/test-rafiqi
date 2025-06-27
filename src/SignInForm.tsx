@@ -91,6 +91,7 @@ export function SignInForm() {
         variant="outline"
         className="w-full"
         onClick={() => void signIn("anonymous")}
+        disabled
       >
         Sign in anonymously
       </Button>
