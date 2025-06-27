@@ -23,7 +23,7 @@ export function ChatInterface() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentConversationId, setCurrentConversationId] =
     useState<Id<"conversations"> | null>(null);
-  const [selectedModel, setSelectedModel] = useState("default");
+  const [selectedModel, setSelectedModel] = useState("rpr1");
   const [customPrompt, setCustomPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -73,8 +73,8 @@ export function ChatInterface() {
 
   const getSystemPrompt = () => {
     return (
-      prompts[selectedModel as keyof typeof prompts] || prompts.rpr1
-    ).replace(/\{customPrompt\}/g, customPrompt || prompts.rpr1);
+      prompts[selectedModel as keyof typeof prompts] || prompts.rpr01
+    ).replace(/\{customPrompt\}/g, customPrompt || prompts.rpr01);
   };
 
   const handleSendMessage = async (content: string) => {
@@ -86,7 +86,7 @@ export function ChatInterface() {
       };
       if (!currentConversationId) {
         const conversationId = await createConversation({
-          title: "New Chat",
+          title: "Chat",
           systemPrompt,
         });
         setCurrentConversationId(conversationId);

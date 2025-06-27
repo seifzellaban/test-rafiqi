@@ -15,8 +15,17 @@ interface ModelSelectorProps {
 }
 
 const predefinedModels = [
-  { id: "rpr1", name: "Rafiqi (RPR1)", description: "First Beta Model" },
-  { id: "rprn", name: "RPRN", description: "Playground Model" },
+  {
+    id: "rpr1",
+    name: "RPR0.1",
+    description:
+      "Core Rafiqi model with foundational personality and capabilities.",
+  },
+  {
+    id: "rprn",
+    name: "RPR0.1N",
+    description: "Enhanced model with feminine traits.",
+  },
 ];
 
 export function ModelSelector({
