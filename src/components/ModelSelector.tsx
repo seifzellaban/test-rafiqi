@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Textarea } from "./ui/textarea";
 import { ChevronDown, Settings, Trash2 } from "lucide-react";
+import { getModelLogic } from "../models";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -16,6 +17,7 @@ interface ModelSelectorProps {
 
 const predefinedModels = [
   { id: "rpr1", name: "Rafiqi (RPR1)", description: "First Beta Model" },
+  { id: "rpr0.1m", name: "Rafiqi (RPR0.1M)", description: "Isolated Copy of RPR1" },
   { id: "rprn", name: "RPRN", description: "Playground Model" },
 ];
 
