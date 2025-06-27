@@ -16,12 +16,15 @@ export function SignInForm() {
     <div className="w-full space-y-6">
       <form
         className="space-y-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           setSubmitting(true);
           const formData = new FormData(e.target as HTMLFormElement);
-          formData.set("flow", flow);
-          void signIn("password", formData).catch((error) => {
+          const email = formData.get("email") as string;
+          const password = formData.get("password") as string;
+          try {
+            await signIn("password", { email, password, flow });
+          } catch (error: any) {
             let toastTitle = "";
             if (error.message.includes("Invalid password")) {
               toastTitle = "Invalid password. Please try again.";
@@ -32,8 +35,9 @@ export function SignInForm() {
                   : "Could not sign up, did you mean to sign in?";
             }
             toast.error(toastTitle);
+          } finally {
             setSubmitting(false);
-          });
+          }
         }}
       >
         <div className="space-y-2">
@@ -46,7 +50,6 @@ export function SignInForm() {
             required
           />
         </div>
-
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <Input
@@ -57,11 +60,9 @@ export function SignInForm() {
             required
           />
         </div>
-
         <Button type="submit" disabled={submitting} className="w-full">
           {flow === "signIn" ? "Sign in" : "Sign up"}
         </Button>
-
         <div className="text-center text-sm text-muted-foreground">
           <span>
             {flow === "signIn"
@@ -78,7 +79,6 @@ export function SignInForm() {
           </Button>
         </div>
       </form>
-
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <Separator className="w-full" />
@@ -87,7 +87,6 @@ export function SignInForm() {
           <span className="bg-background px-2 text-muted-foreground">or</span>
         </div>
       </div>
-
       <Button
         variant="outline"
         className="w-full"

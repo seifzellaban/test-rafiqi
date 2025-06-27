@@ -4,6 +4,7 @@ import { Anonymous } from "@convex-dev/auth/providers/Anonymous";
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+// Convex Auth setup with Password and Anonymous providers, and onSignUp logic
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [
     {
@@ -11,7 +12,6 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
       onSignUp: async (ctx, args) => {
         const userId = await ctx.auth.getUserIdentity();
         if (!userId) throw new Error("Not authenticated");
-        
         // Create a new user document
         await ctx.db.insert("users", {
           tokenIdentifier: userId.tokenIdentifier,
@@ -20,21 +20,16 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
           createdAt: Date.now(),
         });
       },
-    }, 
+    },
     Anonymous
   ],
 });
 
+// Query to get the currently logged-in user
 export const loggedInUser = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      return null;
-    }
-    const user = await ctx.db.get(userId);
-    if (!user) {
-      return null;
-    }
-    return user;
+    if (!userId) return null;
+    return await ctx.db.get(userId);
   },
 });

@@ -1,21 +1,19 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { getAuthUserId } from "@convex-dev/auth/server";
+import { Id } from "./_generated/dataModel";
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
-    const userIdentity = await ctx.auth.getUserIdentity();
-    if (!userIdentity) return [];
-    // userIdentity is an object, but userId in the DB is an Id<"users"> (string)
-    // So compare userIdentity.subject (the user id string) to conversation.userId
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return [];
     return await ctx.db
       .query("conversations")
       .withIndex("by_updated_at")
       .order("desc")
-      .collect()
-      .then((conversations) =>
-        conversations.filter((c) => c.userId === userIdentity.subject)
-      );
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .collect();
   },
 });
 
@@ -23,16 +21,17 @@ export const create = mutation({
   args: {
     title: v.string(),
     systemPrompt: v.optional(v.string()),
-    userId: v.optional(v.id("users")),
   },
-  handler: async (ctx, { title, systemPrompt, userId }) => {
+  handler: async (ctx, { title, systemPrompt }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
     const now = Date.now();
     return await ctx.db.insert("conversations", {
       title,
       systemPrompt: systemPrompt || "You are a helpful AI assistant.",
       createdAt: now,
       updatedAt: now,
-      userId: userId,
+      userId,
     });
   },
 });
@@ -71,10 +70,10 @@ export const updateTitle = mutation({
 export const get = query({
   args: { id: v.id("conversations") },
   handler: async (ctx, { id }) => {
-    const userId = await ctx.auth.getUserIdentity();
+    const userId = await getAuthUserId(ctx);
     const conversation = await ctx.db.get(id);
     if (!conversation) return null;
-    if (conversation.userId && userId !== conversation.userId) {
+    if (conversation.userId !== userId) {
       throw new Error("Access denied: You do not own this conversation.");
     }
     return conversation;
