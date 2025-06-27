@@ -5,19 +5,13 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Trash2 } from "lucide-react";
+import useIsRTLText from "@/hooks/useIsRTLTest";
 
 // Function to detect if text contains Arabic characters
 const isArabicText = (text: string): boolean => {
-  const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+  const arabicRegex =
+    /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
   return arabicRegex.test(text);
-};
-
-// Function to detect if text is primarily RTL
-const isRTLText = (text: string): boolean => {
-  const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-  const rtlChars = (text.match(rtlRegex) || []).length;
-  const totalChars = text.replace(/\s/g, '').length;
-  return rtlChars / totalChars > 0.3;
 };
 
 interface ChatListProps {
@@ -63,7 +57,7 @@ export function ChatList({
   return (
     <div className="p-2">
       {conversations.map((conversation) => {
-        const isRTL = isRTLText(conversation.title);
+        const isRTL = useIsRTLText(conversation.title);
         const hasArabic = isArabicText(conversation.title);
         
         return (

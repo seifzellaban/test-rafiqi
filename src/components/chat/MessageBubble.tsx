@@ -3,19 +3,13 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Copy, Check } from "lucide-react";
+import useIsRTLText from "@/hooks/useIsRTLTest";
 
 // Function to detect if text contains Arabic characters
 const isArabicText = (text: string): boolean => {
-  const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+  const arabicRegex =
+    /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
   return arabicRegex.test(text);
-};
-
-// Function to detect if text is primarily RTL
-const isRTLText = (text: string): boolean => {
-  const rtlRegex = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-  const rtlChars = (text.match(rtlRegex) || []).length;
-  const totalChars = text.replace(/\s/g, '').length;
-  return rtlChars / totalChars > 0.3; // If more than 30% RTL characters
 };
 
 interface Message {
@@ -31,7 +25,7 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ message }: MessageBubbleProps) {
   const [copied, setCopied] = useState(false);
-  const isRTL = isRTLText(message.content);
+  const isRTL = useIsRTLText(message.content);
   const hasArabic = isArabicText(message.content);
 
   const handleCopy = async () => {
@@ -42,8 +36,8 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
   const formatTime = (timestamp: number) => {
     return new Date(timestamp).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -64,7 +58,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           <div className="flex items-start gap-3">
             <div className="flex-1">
               <div
-                className={`whitespace-pre-wrap break-words ${
+                className={`whitespace-pre-wrap break-words max-w-3xl ${
                   isRTL ? "text-right" : "text-left"
                 }`}
                 dir={isRTL ? "rtl" : "ltr"}
@@ -79,11 +73,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
               >
                 {message.content}
               </div>
-              <div
-                className={`flex items-center justify-between mt-2 ${
-                  isRTL ? "flex-row-reverse" : "flex-row"
-                }`}
-              >
+              <div className={`flex items-center justify-between mt-2 gap-2`}>
                 <span className="text-xs opacity-70">
                   {formatTime(message.createdAt)}
                 </span>
@@ -96,12 +86,12 @@ export function MessageBubble({ message }: MessageBubbleProps) {
                   {copied ? (
                     <>
                       <Check className={`w-3 h-3 ${isRTL ? "ml-1" : "mr-1"}`} />
-                      {isRTL ? "تم النسخ!" : "Copied!"}
+                      {"Copied!"}
                     </>
                   ) : (
                     <>
                       <Copy className={`w-3 h-3 ${isRTL ? "ml-1" : "mr-1"}`} />
-                      {isRTL ? "نسخ" : "Copy"}
+                      {"Copy"}
                     </>
                   )}
                 </Button>

@@ -15,7 +15,9 @@ export default function App() {
       <Unauthenticated>
         <div className="min-h-screen flex flex-col bg-background">
           <header className="sticky top-0 z-10 bg-card/80 backdrop-blur-sm h-16 flex justify-between items-center border-b border-border shadow-sm px-4">
-            <h2 className="text-xl font-semibold text-foreground">AI Chat</h2>
+            <h2 className="text-xl font-semibold text-foreground">
+              Closed Beta Testing
+            </h2>
           </header>
           <main className="flex-1 flex items-center justify-center p-8">
             <div className="w-full max-w-md mx-auto">
@@ -44,7 +46,7 @@ function Content() {
     <Card>
       <CardHeader className="text-center">
         <CardTitle className="text-4xl font-bold text-foreground mb-4">
-          AI Chat Assistant
+          Rafiqi
         </CardTitle>
         <CardDescription className="text-xl text-muted-foreground">
           Sign in to start chatting

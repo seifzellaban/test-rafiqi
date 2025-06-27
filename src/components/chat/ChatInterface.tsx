@@ -23,7 +23,7 @@ export function ChatInterface() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentConversationId, setCurrentConversationId] =
     useState<Id<"conversations"> | null>(null);
-  const [selectedModel, setSelectedModel] = useState("rpr1");
+  const [selectedModel, setSelectedModel] = useState("rpr01p");
   const [customPrompt, setCustomPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -66,7 +66,6 @@ export function ChatInterface() {
     const conversationId = await createConversation({
       title: "New Chat",
       systemPrompt,
-      userId,
     });
     setCurrentConversationId(conversationId);
   };
@@ -84,79 +83,65 @@ export function ChatInterface() {
         role: "user",
         content: systemPrompt,
       };
-      if (!currentConversationId) {
-        const conversationId = await createConversation({
+      let conversationId = currentConversationId;
+      if (!conversationId) {
+        conversationId = await createConversation({
           title: "Chat",
           systemPrompt,
         });
         setCurrentConversationId(conversationId);
+      }
+      await createMessage({
+        conversationId,
+        role: "user",
+        content,
+      });
+      setIsLoading(true);
 
-        await createMessage({
-          conversationId,
-          role: "user",
-          content,
-        });
-        setIsLoading(true);
-
-        const geminiResponse = await sendGeminiChat({
-          messages: [systemPromptMessage, { role: "user", content }],
-        });
-
-        await createMessage({
-          conversationId,
-          role: "assistant",
-          content: geminiResponse,
-        });
-
-        // Invisible: prompt model for a super short summary and update title in DB
-        try {
-          const summary = await sendGeminiName({
-            messages: [
-              systemPromptMessage,
-              { role: "user", content },
-              { role: "assistant", content: geminiResponse },
-            ],
-          });
-          if (summary && summary.trim()) {
-            await updateConversationTitle({
-              id: conversationId,
-              title: summary.trim(),
-            });
-            // Optimistically update the conversation title in the local list
-            const idx = conversations.findIndex(
-              (c) => c._id === conversationId
-            );
-            if (idx !== -1) {
-              conversations[idx].title = summary.trim();
-            }
-          }
-        } catch (err) {
-          // Fallback: do nothing if naming fails
-        }
+      // Prepare messages for Gemini
+      let geminiMessages;
+      if (!currentConversationId) {
+        geminiMessages = [systemPromptMessage, { role: "user", content }];
       } else {
-        await createMessage({
-          conversationId: currentConversationId,
-          role: "user",
-          content,
-        });
-        setIsLoading(true);
+        geminiMessages = [
+          systemPromptMessage,
+          ...messages.map((msg) => ({
+            role: msg.role as "user" | "assistant",
+            content: msg.content,
+          })),
+          { role: "user", content },
+        ];
+      }
 
-        const geminiResponse = await sendGeminiChat({
+      const geminiResponse = await sendGeminiChat({
+        messages: geminiMessages,
+      });
+
+      await createMessage({
+        conversationId,
+        role: "assistant",
+        content: geminiResponse,
+      });
+
+      // Always update the title after assistant response
+      try {
+        const summary = await sendGeminiName({
           messages: [
             systemPromptMessage,
-            ...messages.map((msg) => ({
-              role: msg.role as "user" | "assistant",
-              content: msg.content,
-            })),
             { role: "user", content },
+            { role: "assistant", content: geminiResponse },
           ],
         });
-
-        await createMessage({
-          conversationId: currentConversationId,
-          role: "assistant",
-          content: geminiResponse,
-        });
+        if (summary && summary.trim() && conversationId) {
+          await updateConversationTitle({
+            id: conversationId as Id<"conversations">,
+            title: summary.trim(),
+          });
+        } else if (!conversationId) {
+          console.error("conversationId is undefined when updating title");
+        }
+      } catch (err) {
+        console.error("Error updating conversation title:", err);
       }
     } catch (error) {
       console.error("Error getting AI response:", error);
