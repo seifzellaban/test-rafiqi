@@ -40,5 +40,5 @@ window.addEventListener('message', async (message) => {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  assetsInclude: ['**/*.txt'], // Add support for text files
+  assetsInclude: ['**/*.txt'], // Add text files support
 }));
