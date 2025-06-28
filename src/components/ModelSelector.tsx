@@ -31,6 +31,11 @@ const predefinedModels = [
     name: "RPR0.1N",
     description: "Enhanced model with feminine traits.",
   },
+  {
+    id: "ruhm01",
+    name: "RUHM01",
+    description: "A model that thinks and getting deeper into your persona.",
+  },
 ];
 
 export function ModelSelector({
