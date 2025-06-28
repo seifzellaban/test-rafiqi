@@ -71,9 +71,17 @@ export function ChatInterface() {
   };
 
   const getSystemPrompt = () => {
-    return (
-      prompts[selectedModel as keyof typeof prompts] || prompts.rpr01
-    ).replace(/\{customPrompt\}/g, customPrompt || prompts.rpr01);
+    console.log('Selected model:', selectedModel);
+    console.log('Available prompts:', prompts);
+    console.log('Custom prompt:', customPrompt);
+    
+    if (selectedModel === "custom" && customPrompt) {
+      console.log('Using custom prompt');
+      return customPrompt;
+    }
+    const prompt = prompts[selectedModel as keyof typeof prompts] || prompts.rpr01;
+    console.log('Using prompt:', prompt);
+    return prompt;
   };
 
   const handleSendMessage = async (content: string) => {
