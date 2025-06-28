@@ -1,8 +1,8 @@
 // Utility to load prompts
-import rpr01Prompt from './prompts/rpr01.txt';
-import rpr01pPrompt from './prompts/rpr01p.txt';
-import rpr01nPrompt from './prompts/rpr01n.txt';
-import ruhm01Prompt from './prompts/ruhm01.txt';
+import rpr01Prompt from './prompts/rpr01.txt?raw';
+import rpr01pPrompt from './prompts/rpr01p.txt?raw';
+import rpr01nPrompt from './prompts/rpr01n.txt?raw';
+import ruhm01Prompt from './prompts/ruhm01.txt?raw';
 
 // Map of model IDs to their prompts
 const prompts = {
