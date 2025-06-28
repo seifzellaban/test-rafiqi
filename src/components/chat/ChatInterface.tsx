@@ -17,7 +17,7 @@ import {
 import { Menu } from "lucide-react";
 import { DarkModeToggle } from "../layout/DarkModeToggle";
 import { MobileSidebar } from "../sidebar/MobileSidebar";
-import prompts from "../../lib/prompts.json";
+import prompts from "../../lib/prompts";
 
 export function ChatInterface() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
