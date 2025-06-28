@@ -71,9 +71,7 @@ export function ChatInterface() {
   };
 
   const getSystemPrompt = () => {
-    console.log('Selected model:', selectedModel);
-    console.log('Available prompts:', prompts);
-    console.log('Custom prompt:', customPrompt);
+
     
     if (selectedModel === "custom" && customPrompt) {
       console.log('Using custom prompt');
